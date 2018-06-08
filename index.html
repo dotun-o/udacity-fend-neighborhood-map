@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="Udacity Front-End Developer Nanodegree: Neighborhood Map Project">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="js/knockout-3.4.2.js"></script>
+  <script src="js/markers.js"></script>
+  <script src="js/app.js"></script>
+  
+  <link rel="stylesheet" href="css/app.css">
+  
+  <title>Neighborhood Map</title>
+</head>
+
+<body>
+<div class="wrapper">
+  <div id="map"></div>
+  <input id="search" type="text" data-bind="textInput: searchValue, valueUpdate: 'afterkeydown'" placeholder="Type here to filter pins">
+  <div id="info-pane">
+    <header class="info-pane-header">
+      <h2>Location Info</h2>  
+      <div class="close" title="Close">X</div>
+    </header>
+    <div class="info-pane-content"></div>
+  </div>
+</div>
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyCsG_CIY8Ngjd1OEu2LGJr5O9QWdTt4NiM&callback=initMap" onerror="mapError()"></script>
+</body>
+</html>
