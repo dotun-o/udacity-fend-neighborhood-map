@@ -1,5 +1,5 @@
 function ViewModel() {
-  var self, map, pins, geocoder, infoWindow, infoPane;
+  var self, map, geocoder, infoWindow, locationsList, infoPane;
 
   self = this;
   
@@ -7,37 +7,53 @@ function ViewModel() {
     center: {lat: 34.033222, lng: -84.4709025},
     zoom: 12
   });
-  pins = [];
+  self.pins = ko.observableArray([]);
   geocoder = new google.maps.Geocoder();
   infoWindow = new google.maps.InfoWindow();
   infoPane = document.getElementById("info-pane");
+  locationsList = document.getElementById("locations-list");
   self.query = ko.observable("");
 
+  // map pins setup - instantiation, event listeners
   for(var marker of markers) {
     var markerInstance = new google.maps.Marker({
       map: map,
-      title: marker.title,
       position: {lat: marker.coords.lat, lng: marker.coords.lng},
       animation: google.maps.Animation.DROP,
     });
+    
+    // This needed to be set outside the instantiation
+    // above in order to work properly
+    markerInstance.title = ko.observable(marker.title);
 
-    pins.push(markerInstance);
+    self.pins.push(markerInstance);
 
+    // Open Google Maps' infoWindow
     google.maps.event.addListener(markerInstance, "mouseover", function() {
-      infoWindow.setContent(this.title);
+      infoWindow.setContent(this.title());
       infoWindow.open(map, this);
     });
 
+    // close Google Maps' infoWindow
     google.maps.event.addListener(markerInstance, "mouseout", function() {
       infoWindow.close();
     });
 
+    // pins load and open infoPane
     google.maps.event.addListener(markerInstance, "click", function() {
       var infoPaneContent = infoPane.getElementsByClassName("info-pane-content")[0];
       var latLng = new google.maps.LatLng(this.position.lat(), this.position.lng());
-      var closureTitle = this.title;
+      var closureTitle = this.title();
+
+      // bounce pin
+      this.setAnimation(google.maps.Animation.BOUNCE);
+      setTimeout((function() {
+          this.setAnimation(null);
+        }).bind(this), 1000);
+
+      // get
       
-      // Get address from pin's lat-lng
+      // get address from pin's lat-lng
       geocoder.geocode({location: latLng}, function(results, status) {
         if (status === google.maps.GeocoderStatus.OK) {
           if(results[0]) {
@@ -51,21 +67,54 @@ function ViewModel() {
       });
     });
 
+    // close infoPane
     infoPane.getElementsByClassName("close")[0].addEventListener("click", () => {
       infoPane.classList.remove("open");
     });
+  } // end pins instantiation
+
+  // trigger pin when matching list item is clicked
+  triggerClickOnPin = function(data, event) {
+    var matchingPin = self.pins().filter(function(pin) {
+      return pin.title().toLowerCase() === event.target.innerHTML.toLowerCase();
+    })[0];
+
+    if(matchingPin) {
+      google.maps.event.trigger(matchingPin, "click");
+    }
   }
 
+  // filter pins and locations list
   self.filteredPins = ko.computed(function() {
-    for(var pin of pins) {
-      if(pin.title.toLowerCase().includes(self.query().trim().toLowerCase())) {
+    // filter pins
+    filterPins();
+
+    // filter locations list
+    if(!self.query()) {
+      return self.pins();
+    }
+
+    return self.pins().filter(function(pin) {
+      return pin.title()
+      .toLowerCase()
+      .includes(self.query()
+                    .trim()
+                    .toLowerCase());
+    });
+    
+  });
+
+  // filter pins
+  function filterPins() {
+    for(var pin of self.pins()) {
+      if(pin.title().toLowerCase().includes(self.query().trim().toLowerCase())) {
         pin.setVisible(true);
       }
       else {
         pin.setVisible(false);
       }
     }
-  });
+  }
 
   console.log("🎉 Map initialized. 🎉");
 }

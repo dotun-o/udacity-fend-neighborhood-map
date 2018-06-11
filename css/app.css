@@ -25,7 +25,29 @@
   position: fixed;
   top: 10px;
   left: 10px;
+  z-index: 1010;
+  font-size: 20px;
+  color: #345;
+}
+
+#locations-list {
+  border-radius: 5px;
+  width: 200px;
+  position: fixed;
+  top: 80px;
+  left: 10px;
   z-index: 1000;
+  background-color: #345;
+  color: #fff;
+}
+
+#locations-list li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+#locations-list li:not(:last-child) {
+  border-bottom: 1px solid #fff;
 }
 
 #info-pane {
@@ -35,7 +57,7 @@
   position: absolute;
   top: 0;
   right: -30vw;
-  z-index: 1010;
+  z-index: 1020;
   background-color: #345;
   color: #fff;
   transition: 0.5s;
