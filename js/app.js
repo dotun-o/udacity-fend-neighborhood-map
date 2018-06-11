@@ -1,5 +1,5 @@
 function ViewModel() {
-  var self, map, geocoder, infoWindow, locationsList, infoPane;
+  var self, map, geocoder, infoWindow, locationsList, wikiUrl, infoPane;
 
   self = this;
   
@@ -12,9 +12,10 @@ function ViewModel() {
   infoWindow = new google.maps.InfoWindow();
   infoPane = document.getElementById("info-pane");
   locationsList = document.getElementById("locations-list");
+  wikiUrl = "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&origin=*";
   self.query = ko.observable("");
 
-  // map pins setup - instantiation, event listeners
+  // map pins setup - instantiation, event listeners, Wikipedia link
   for(var marker of markers) {
     var markerInstance = new google.maps.Marker({
       map: map,
@@ -42,6 +43,8 @@ function ViewModel() {
     // pins load and open infoPane
     google.maps.event.addListener(markerInstance, "click", function() {
       var infoPaneContent = infoPane.getElementsByClassName("info-pane-content")[0];
+      infoPaneContent.innerHTML = "";
+
       var latLng = new google.maps.LatLng(this.position.lat(), this.position.lng());
       var closureTitle = this.title();
 
@@ -50,8 +53,6 @@ function ViewModel() {
       setTimeout((function() {
           this.setAnimation(null);
         }).bind(this), 1000);
-
-      // get
       
       // get address from pin's lat-lng
       geocoder.geocode({location: latLng}, function(results, status) {
@@ -61,6 +62,20 @@ function ViewModel() {
                                           <h3 class="location-name">${closureTitle}</h3>
                                           <div class="location-address">${results[0].formatted_address}</div>
                                         `;
+            // get Wikipedia link
+            fetch(wikiUrl + "&titles=" + closureTitle)
+              .then(function(response) {
+              return response.json();
+              })
+              .then(function(data) {
+                if(data.query.pages[0].pageid) {
+                  infoPaneContent.innerHTML += `<div class="wiki-link"><a href="https://en.wikipedia.org/?curid=${data.query.pages[0].pageid}" target="_blank">Wikipedia</a></div>`;
+                }
+              })
+              .catch(function(error) {
+                console.log(error);
+              });
+
             infoPane.classList.add("open");
           }
         }
