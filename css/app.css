@@ -12,12 +12,12 @@
   overflow: hidden;
 }
 
-#map {
+.map {
   width: 100vw;
   height: 100vh;
 }
 
-#search {
+.search {
   display: block;
   border-radius: 5px;
   padding: 20px;
@@ -30,7 +30,7 @@
   color: #345;
 }
 
-#locations-list {
+.locations-list {
   border-radius: 5px;
   width: 200px;
   position: fixed;
@@ -41,16 +41,16 @@
   color: #fff;
 }
 
-#locations-list li {
+.locations-list li {
   padding: 20px;
   cursor: pointer;
 }
 
-#locations-list li:not(:last-child) {
+.locations-list li:not(:last-child) {
   border-bottom: 1px solid #fff;
 }
 
-#info-pane {
+.info-pane {
   padding: 40px;
   width: 30vw;
   height: 100vh;
@@ -63,66 +63,66 @@
   transition: 0.5s;
 }
 
-#info-pane a {
+.info-pane a {
   color: #fff;
 }
 
-#info-pane .info-pane-header {
+.info-pane .info-pane-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 40px;
 }
 
-#info-pane .info-pane-header h2 {
+.info-pane .info-pane-header h2 {
   font-weight: normal;
 }
 
-#info-pane .info-pane-header .close {
+.info-pane .info-pane-header .close {
   border: 1px solid #fff;
   border-radius: 5px;
   padding: 0 7px;
   cursor: pointer;
 }
 
-#info-pane .info-pane-header .close:hover {
+.info-pane .info-pane-header .close:hover {
   background-color: #fff;
   color: #345;
 }
 
-#info-pane .info-pane-content .location-name {
+.info-pane .info-pane-content .location-name {
   margin-bottom: 20px;
   font-size: 3rem;
   font-weight: normal;
   line-height: 1;
 }
 
-#info-pane .info-pane-content .location-address {
+.info-pane .info-pane-content .location-address {
   font-size: 1.5rem;
 }
 
-#info-pane .info-pane-content .wiki-link {
+.info-pane .info-pane-content .wiki-link {
   margin-top: 20px;
 }
 
 /* Triggers animation */
-#info-pane.open {
+.info-pane.open {
   right: 0;
 }
 
 @media (max-width: 768px) {
-  #search {
+  .search {
     width: calc(100% - 20px);
   }
 
-  #info-pane {
+  .info-pane {
     width: 50vw;
     right: -50vw;
   }
 }
 
 @media (max-width: 480px) {
-  #info-pane {
+  .info-pane {
     width: 100vw;
     right: -100vw;
   }

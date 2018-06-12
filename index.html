@@ -15,12 +15,12 @@
 
 <body>
 <div class="wrapper">
-  <div id="map"></div>
-  <input id="search" type="text" data-bind="textInput: query, valueUpdate: 'afterkeydown'" placeholder="Type here to filter pins">
-  <ul id="locations-list" data-bind="foreach: filteredPins">
+  <div id="map" class="map"></div>
+  <input id="search" class="search" type="text" data-bind="textInput: query" placeholder="Type here to filter pins">
+  <ul id="locations-list" class="locations-list" data-bind="foreach: filteredPins">
     <li data-bind="text: title, click: triggerClickOnPin"></li>
   </ul>
-  <div id="info-pane">
+  <div id="info-pane" class="info-pane">
     <header class="info-pane-header">
       <h2>Location Info</h2>  
       <div class="close" title="Close">X</div>

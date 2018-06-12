@@ -9,6 +9,8 @@ Using the search bar, one can filter the map points.
 ## How To Run
 Open index.html in your browser
 
+Live demo: https://dotun-o.github.io/udacity-fend-neighborhood-map/
+
 ## APIs Used
 - Google Maps API
 - Knockout.js Framework
