@@ -1,7 +1,7 @@
 "use strict";
 
 function ViewModel() {
-  var self, map, geocoder, infoWindow, locationsList, wikiUrl, infoPane;
+  var self, map, geocoder, infoWindow, wikiUrl, infoPane;
 
   self = this;
   
@@ -13,7 +13,6 @@ function ViewModel() {
   geocoder = new google.maps.Geocoder();
   infoWindow = new google.maps.InfoWindow();
   infoPane = document.getElementById("info-pane");
-  locationsList = document.getElementById("locations-list");
   wikiUrl = "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&origin=*";
   self.query = ko.observable("");
   self.infoPaneText = ko.observable("");
@@ -63,8 +62,6 @@ function ViewModel() {
 
   // load and open infoPane
   function loadAndOpenInfoPane() {
-    var infoPaneContent = infoPane.getElementsByClassName("info-pane-content")[0];
-
     var latLng = new google.maps.LatLng(this.position.lat(), this.position.lng());
     var closureTitle = this.title;
 
